@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>JS DRUM Kit</title>
+    <style>
+        *,
+        *:after,
+        *:before
+        {
+            margin: 0;
+            padding: 0;
+        }
+        html
+        {
+            box-sizing: border-box;
+        }
+        body
+        {
+            width: 100vw;
+            height: 100vh;
+            background: url('https://source.unsplash.com/1200x1200/daily?black');
+            background-repeat: no-repeat;
+            background-size: cover;
+            
+        }
+        .keys
+        {
+            margin: 0 auto;
+            width: 80%;
+            height: 100%;;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .key
+        {
+            margin: 0 15px;
+            background: linear-gradient(to left,rgba(0,0,0,.1),rgba(0,0,0,.4));
+            border: 4px solid black;
+            box-shadow: -2px 2px 5px rgba(0,0,0,.3);
+            border-radius: 20px;
+            cursor: pointer;
+            height: 12%;
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all .07s linear;
+        }
+
+        .key p{
+            font-size: 40px;
+            color: white;
+        }
+        .key span{
+            font-size: 20px;
+            color: yellow;
+        }
+
+
+        .up {
+            transform: scale(1.5);  
+        }
+    </style>
+</head>
+<body>
+    <div class="keys">
+        <div data-code="65" class="key">
+            <p>A</p>
+            <span>CLAP</span>
+        </div>
+        <div data-code="83" class="key">
+            <p>S</p>
+            <span>HITHAT</span>
+        </div>
+        <div data-code="68"class="key">
+            <p>D</p>
+            <span>KICK</span>
+        </div>
+        <div data-code="70" class="key">
+            <p>F</p>
+            <span>OPENHAT</span>
+        </div>
+        <div data-code="71" class="key">
+            <p>G</p>
+            <span>BOOM</span>
+        </div>
+        <div data-code="72" class="key">
+            <p>H</p>
+            <span>RIDE</span>
+        </div>
+        <div data-code="74" class="key">
+            <p>J</p>
+            <span>SNARE</span>
+        </div>
+        <div data-code="75" class="key">
+            <p>K</p>
+            <span>TOM</span>
+        </div>
+        <div data-code="76" class="key">
+            <p>L</p>
+            <span>TINK</span>
+        </div>
+    </div>
+    <audio data-code="65" src="sounds/clap.wav"></audio>
+    <audio data-code="83" src="sounds/hihat.wav"></audio>
+    <audio data-code="68" src="sounds/kick.wav"></audio>
+    <audio data-code="70" src="sounds/openhat.wav"></audio>
+    <audio data-code="71" src="sounds/boom.wav"></audio>
+    <audio data-code="72" src="sounds/ride.wav"></audio>
+    <audio data-code="74" src="sounds/snare.wav"></audio>
+    <audio data-code="75" src="sounds/tom.wav"></audio>
+    <audio data-code="76" src="sounds/tink.wav"></audio>
+
+<script>
+    const elements = Array.from(document.querySelectorAll(".key"));
+    const audioEles = Array.from(document.querySelectorAll('audio'));
+    const body = document.querySelector('body');
+    const keys = elements.map(el => parseInt(el.dataset.code));
+
+    function record(e)
+    {  
+            const div = document.querySelector(`div[data-code="${e.keyCode}"]`)
+            const audio = document.querySelector(`audio[data-code="${e.keyCode}"]`)
+            if(!audio) return;
+            audio.currentTime = 0 ;
+            audio.play();
+            div.classList.add('up');
+    }
+
+    function removeTransition(e)
+    {
+        console.log("remove")
+        if(e.propertyName !== 'transform') return;
+        e.target.classList.remove('up');
+    }
+
+    window.addEventListener('keydown',record);
+    elements.forEach(el => el.addEventListener('transitionend',removeTransition));
+
+
+</script>
+</body>
+</html>
